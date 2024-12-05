@@ -7,7 +7,7 @@ pos = 0
 for k, row in enumerate(fileRows):
     e = row.split("|")
     if(e[0] == "\n"):
-        pos = k+2
+        pos = k+1
         break
     ordList.append(100 * int(e[0]) + int(e[1]))
 ordList.sort(reverse=True)
@@ -33,8 +33,8 @@ def part1():
 
 def part2():
     sum = 0
-    for row in reversed(fileRows):
-        e = row.split(",")
+    for z in range(pos, len(fileRows)):
+        e = fileRows[z].split(",")
         if(e[0] == "\n"):
             break
         
