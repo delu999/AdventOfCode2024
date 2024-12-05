@@ -28,7 +28,7 @@ def part1():
             break
 
         if isSorted(e):
-            sum += int(e[int(len(e)/2)])
+            sum += int(e[len(e)//2])
     return sum
 
 def part2():
@@ -50,7 +50,7 @@ def part2():
                 swapped = True
             if not swapped:
                 break
-        sum += int(e[int(len(e)/2)])
+        sum += int(e[len(e)//2])
 
     return sum
 
