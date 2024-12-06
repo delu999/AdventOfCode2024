@@ -1,46 +1,29 @@
 with open("./day6/input.txt", "r") as f:
     fileRows = f.readlines()
 
-posRow = posCol = sum = dir = 0
-ar = []
-for i, row in enumerate(fileRows):
-    tmp = []
-    for j in range(len(fileRows[0])-1):
-        if row[j] == "#":
-           tmp.append(4)
-           continue
-        elif row[j] != ".":
-            posRow = i
-            posCol = j
-        tmp.append(5)     
-    ar.append(tmp)
+#get position of ^
+rows = len(fileRows)
+cols = len(fileRows[0]) - 1
+for i in range(rows):
+    for j in range(cols):
+        if fileRows[i][j] == "^":
+            r = i
+            c = j
+            break
 
-#0=up, 1=right, 2=down, 3=left, 4=#, 5=., 6=visited 
-try:    
-    while True:
-        if ar[posRow][posCol] != 6:
-            ar[posRow][posCol] = 6
-            sum += 1
-        match dir:
-            case 0:       
-                if ar[posRow-1][posCol] != 4:
-                    posRow -= 1        
-                else:
-                    dir = 1
-            case 1:
-                if ar[posRow][posCol+1] != 4:
-                    posCol += 1        
-                else:
-                    dir = 2
-            case 2:
-                if ar[posRow+1][posCol] != 4:
-                    posRow += 1
-                else:
-                    dir = 3
-            case 3:
-                if ar[posRow][posCol-1] != 4:
-                    posCol -= 1
-                else:
-                    dir = 0      
-except:
-    print(sum)
+dir = 0
+sum = 1
+directions = ((-1, 0), (0, 1), (1, 0), (0, -1))
+visited = set()
+while r+1<rows and r>=0 and c+1<cols and c >= 0:
+    if (r,c) not in visited:
+        visited.add((r,c))
+        sum += 1
+    
+    move = directions[dir]
+    if fileRows[r+move[0]][c+move[1]] == "#":
+        dir = (dir + 1) % 4  
+        continue
+    r += move[0]
+    c += move[1]
+print(sum)
