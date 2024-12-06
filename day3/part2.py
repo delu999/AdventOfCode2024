@@ -1,10 +1,18 @@
 import re
 
 with open("./day3/input.txt", "r") as file:
-    fileContent = "do()" + file.read().strip() + "don't()"
-    print(fileContent)
-    matches = re.findall(r"(?<=do[(][)]).*?mul[(](\d+),(\d+)[)](?=.*?don't[(][)])", fileContent, re.DOTALL)
+    matches = re.findall(r"(do\(\)|don't\(\)|mul\(\d+,\d+\))", file.read())
+    enabled = True
     sum = 0
-    for e in matches:
-        sum += int(e[0]) * int(e[1])
+    
+    for i in matches:
+        if i == "do()":
+            enabled = True
+        elif i == "don't()":
+            enabled = False
+        else:
+            m = re.match(r"mul\((\d+),(\d+)\)", i)
+            if m and enabled:
+                sum += int(m.group(1)) * int(m.group(2))
+                
     print(sum)
