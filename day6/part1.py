@@ -15,7 +15,7 @@ dir = 0
 sum = 1
 directions = ((-1, 0), (0, 1), (1, 0), (0, -1))
 visited = set()
-while r+1<rows and r>=0 and c+1<cols and c >= 0:
+while 0 <= r < rows-1 and 0 <= c < cols-1:
     if (r,c) not in visited:
         visited.add((r,c))
         sum += 1
