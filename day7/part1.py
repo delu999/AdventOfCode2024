@@ -9,10 +9,8 @@ for i, line in enumerate(file):
     totPerm = 2 ** blank_spaces
     permutations = [[0 for _ in range(blank_spaces)] for _ in range(totPerm)]
     
-    k = 0
     a = 1
     for i in range(blank_spaces-1, -1, -1):
-        k += 1
         b = a
         a *= 2
         for j in range(totPerm):
