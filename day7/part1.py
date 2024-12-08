@@ -9,13 +9,13 @@ for i, line in enumerate(file):
 
 a = 1
 totPerm = 2 ** maxOp
-permutations = [[0 for _ in range(maxOp)] for _ in range(totPerm)]
+permutations = [[] for _ in range(totPerm)]
 
-for i in range(maxOp-1, -1, -1):
+for i in range(maxOp - 1, -1, -1):
     b = a
     a *= 2
     for j in range(totPerm):
-        permutations[j][i] = "+" if j % a < b else "*"
+        permutations[j].insert(0, "+" if j % a < b else "*")
 
 tot = 0
 for _, line in enumerate(file):

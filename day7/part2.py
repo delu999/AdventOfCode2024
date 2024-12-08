@@ -9,19 +9,20 @@ for i, line in enumerate(file):
 
 a = 1
 totPerm = 3 ** maxOp
-permutations = [[0 for _ in range(maxOp)] for _ in range(totPerm)]
+permutations = [[] for _ in range(totPerm)]
 
-for i in range(maxOp-1, -1, -1):
+for i in range(maxOp - 1, -1, -1):
     b = a
     a *= 3
     for j in range(totPerm):
-        if j % a < b:
-            permutations[j][i] = "+"
-        elif j % a >= a-b:
-            permutations[j][i] = "|"
+        r = j % a
+        if r < b:
+            permutations[j].insert(0, "+")
+        elif r >= a - b:
+            permutations[j].insert(0, "|")
         else:
-            permutations[j][i] = "*"
-
+            permutations[j].insert(0, "*")
+        
 tot = 0
 for _, line in enumerate(file):
     operands = line.split(" ")
