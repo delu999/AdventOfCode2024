@@ -1,78 +1,37 @@
-def add_to_visited(visited, key):
-    if key in visited:
-        visited[key] += 1
-    else:
-        visited[key] = 1
+with open("./day7/input.txt", "r") as f:
+    file = f.readlines()
 
-with open("./day6/input.txt", "r") as f:
-    fileRows = f.readlines()
+tot = 0
+for i, line in enumerate(file):
+    operands = line.split(" ")
+    result = int(operands[0][:-1])
+    blank_spaces = len(operands) - 2
+    totPerm = 3 ** blank_spaces
+    permutations = [[0 for _ in range(blank_spaces)] for _ in range(totPerm)]
+    
+    a = 1
+    for i in range(blank_spaces-1, -1, -1):
+        b = a
+        a *= 3
+        for j in range(totPerm):
+            if j % a < b:
+                permutations[j][i] = "+"
+            elif j % a >= a-b:
+                permutations[j][i] = "|"
+            else:
+                permutations[j][i] = "*"
 
-rows = len(fileRows)
-cols = len(fileRows[0].strip())
-
-saveR, saveC = None, None
-for i in range(rows):
-    for j in range(cols):
-        if fileRows[i][j] == "^":
-            saveR, saveC = i, j
+    for i in range(totPerm):
+        tmpTot = int(operands[1])
+        for j in range(blank_spaces):
+            if permutations[i][j] == "+":
+                tmpTot = tmpTot + int(operands[j+2])
+            elif permutations[i][j] == "*":
+                tmpTot = tmpTot if tmpTot != 0 else 1
+                tmpTot = tmpTot * int(operands[j+2])
+            else:
+                tmpTot = int(str(tmpTot)+operands[j+2])
+        if result == tmpTot:
+            tot += result
             break
-    if saveR is not None:
-        break
-
-directions = ((-1, 0), (0, 1), (1, 0), (0, -1))
-
-path = set()
-r, c = saveR, saveC
-dir = 0
-
-while 0 <= r < rows and 0 <= c < cols:
-    path.add((r, c))
-    move = directions[dir]
-    nr = r + move[0]
-    nc = c + move[1]
-
-    if not (0 <= nr < rows and 0 <= nc < cols):
-        break
-
-    if fileRows[nr][nc] == "#":
-        dir = (dir + 1) % 4
-        continue
-
-    r = nr
-    c = nc
-
-path.discard((saveR, saveC))
-sum = 0
-
-def simulate_with_obstacle(obstacle):
-    r, c = saveR, saveC
-    dir = 0
-    visited = {}
-    add_to_visited(visited, (r, c, dir))
-
-    while 0 <= r < rows and 0 <= c < cols:
-        move = directions[dir]
-        nr = r + move[0]
-        nc = c + move[1]
-
-        if not (0 <= nr < rows and 0 <= nc < cols):
-            return False
-
-        if (nr, nc) == obstacle or fileRows[nr][nc] == "#":
-            dir = (dir + 1) % 4
-            continue
-
-        r = nr
-        c = nc
-        add_to_visited(visited, (r, c, dir))
-
-        if visited[(r, c, dir)] > 1:
-            return True
-
-    return False
-
-for e in path:
-    if simulate_with_obstacle(e):
-        sum += 1
-
-print(sum)
+print(tot)
