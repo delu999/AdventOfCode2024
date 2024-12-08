@@ -2,7 +2,6 @@ with open("./day8/input.txt", "r") as f:
     file = f.readlines()
 
 antennasWithPos = {}
-
 for i, fileRow in enumerate(file):
     for j, char in enumerate(fileRow):
         if char == "." or char == "\n": 
@@ -13,7 +12,6 @@ for i, fileRow in enumerate(file):
 
 rows, cols = i+1, j+1
 unique = set()
-tot = 0
 for antenna in antennasWithPos:
     positions = antennasWithPos[antenna] 
     posLen = len(positions)
@@ -37,5 +35,4 @@ for antenna in antennasWithPos:
             if antinode2[0] >= 0 and 0 <= antinode2[1] < cols:
                 unique.add(antinode2)
 
-print(unique)
 print(len(unique))
