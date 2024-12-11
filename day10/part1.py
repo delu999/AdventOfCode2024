@@ -3,7 +3,7 @@ def addNeighbor(next, paths, x, y):
         paths.update({next: set()})
     paths[next].add((x, y))    
 
-def findScore(trailHead):
+def findScore(trailHead, trailMap, rows, cols):
     paths = {}
     moves = ((1, 0), (-1, 0), (0, 1), (0, -1))
 
@@ -13,7 +13,7 @@ def findScore(trailHead):
         
         for m in moves:
             r, c = x + m[0], y + m[1]
-            if 0 <= r < rows and 0 <= c < rows and trailMap[r][c] == str(next): 
+            if 0 <= r < rows and 0 <= c < cols and trailMap[r][c] == str(next): 
                 addNeighbor(next, paths, r, c)
         
         if next not in paths:
@@ -27,21 +27,22 @@ def findScore(trailHead):
 
 
 def part1():
+    tmpFile = open("./day10/input.txt", "r")
+    trailMap = tmpFile.readlines()
+    tmpFile.close()
+    rows = len(trailMap)
+    cols = len(trailMap[0]) - 1
+
+    trailHeads = set()
+    for i in range(rows):
+        for j in range(cols):
+            if trailMap[i][j] == "0":
+                trailHeads.add((i, j))
+    
     scores = 0
     while len(trailHeads) > 0:
-        scores += findScore(trailHeads.pop())
+        scores += findScore(trailHeads.pop(), trailMap, rows, cols)
     return scores
         
-tmpFile = open("./day10/input.txt", "r")
-trailMap = tmpFile.readlines()
-tmpFile.close()
-rows = len(trailMap)
-cols = len(trailMap[0]) - 1
-
-trailHeads = set()
-for i in range(rows):
-    for j in range(cols):
-        if trailMap[i][j] == "0":
-            trailHeads.add((i, j))
 
 print(part1())
